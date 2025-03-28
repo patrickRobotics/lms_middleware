@@ -7,6 +7,7 @@ from functools import wraps
 from flask_caching import Cache
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 # Create Flask app
@@ -17,9 +18,9 @@ REST_USERS = {
     os.getenv('REST_USER'): os.getenv('REST_PASS')
 }
 # SOAP Service Configuration
-SOAP_URL = "http://localhost:8093/service/transaction-data"
-SOAP_USER = "admin"
-SOAP_PASS = "pwd123"
+SOAP_URL = os.getenv('SOAP_URL')
+SOAP_USER = os.getenv('SOAP_USER')
+SOAP_PASS = os.getenv('SOAP_PASS')
 
 
 def soap_to_rest_transaction(soap_response):
@@ -147,7 +148,7 @@ def get_transactions(customer_number):
     headers = {'Content-Type': 'text/xml'}
     try:
         response = requests.post(
-            SOAP_URL,
+            f'{SOAP_URL}/service/transaction-data',
             data=soap_request,
             headers=headers,
             auth=HTTPBasicAuth(SOAP_USER, SOAP_PASS)
